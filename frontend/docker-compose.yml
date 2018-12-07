@@ -1,26 +1,19 @@
-version: '2'
+version: '3'
 services:
-  server:
+  web:
     build:
-      context: ./server/
-    command: /usr/app/node_modules/.bin/nodemon src/index.js
-    volumes:
-      - ./server/:/usr/app
-      - /usr/app/node_modules
-    ports:
-      - "8080:8080"
-    # env_file: ./server/.env # TODO - uncomment this to auto-load your .env file!
-    environment:
-      - NODE_ENV=development
-      - CHOKIDAR_USEPOLLING=true
-  client:
-    build:
-      context: ./client/
-    command: npm start
-    volumes:
-      - ./client/:/usr/app
-      - /usr/app/node_modules
-    depends_on:
-      - server
-    ports:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports: 
       - "3000:3000"
+    volumes:
+      - /frontend/node_modules
+      - .:/frontend
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /frontend/node_modules
+      - .:/frontend
+    command: ["npm", "run", "test"]
