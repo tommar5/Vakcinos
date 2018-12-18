@@ -1,5 +1,6 @@
 import React from 'react';
-import logo from '../../logo.svg';
+import logo from '../../vaccine1.png';
+import logo2 from '../../vaccine2.png';
 
 import {
   Container, Row, Col, Form, Input, Button, Navbar, Nav,
@@ -7,12 +8,12 @@ import {
   DropdownToggle, DropdownMenu, DropdownItem
 } from 'reactstrap';
 
-const AVATAR = 'https://www.gravatar.com/avatar/429e504af19fc3e1cfa5c4326ef3394c?s=240&d=mm&r=pg';
+import LoginModal from '../Auth/LoginModal';
+import RegisterModal from '../Auth/RegisterModal';
 
 const Header = () => (
   <header>
     <Navbar fixed="top" color="light" light expand="xs" className="border-bottom border-gray bg-white" style={{ height: 80 }}>
-    
       <Container>
         <Row noGutters className="position-relative w-100 align-items-center">
         
@@ -21,7 +22,7 @@ const Header = () => (
             
               <NavItem className="d-flex align-items-center">
                 <NavLink className="font-weight-bold" href="/">
-                  <img src={AVATAR} alt="avatar" className="img-fluid rounded-circle" style={{ width: 36 }} />
+                  <img src={logo2} alt="avatar" className="img-fluid rounded-circle" style={{ width: 36 }} />
                 </NavLink>
               </NavItem>
               
@@ -30,39 +31,31 @@ const Header = () => (
               </NavItem>
               
               <NavItem className="d-flex align-items-center">
-                <NavLink className="font-weight-bold" href="/">Events</NavLink>
+                <NavLink className="font-weight-bold" href="/vaccines">Vaccines</NavLink>
               </NavItem>
               
-              <UncontrolledDropdown className="d-flex align-items-center" nav inNavbar>
-                <DropdownToggle className="font-weight-bold" nav caret>Learn</DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem className="font-weight-bold text-secondary text-uppercase" header disabled>Learn React</DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>Documentation</DropdownItem>
-                  <DropdownItem>Tutorials</DropdownItem>
-                  <DropdownItem>Courses</DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
+              <NavItem className="d-flex align-items-center">
+                <NavLink className="font-weight-bold" href="/about-us">About Us</NavLink>
+              </NavItem>
               
             </Nav>
           </Col>
           
           <Col className="d-flex justify-content-xs-start justify-content-lg-center">
-            <NavbarBrand className="d-inline-block p-0" href="/" style={{ width: 80 }}>
+            <NavbarBrand className="d-inline-block p-0" href="/" style={{ width: 70 }}>
               <img src={logo} alt="logo" className="position-relative img-fluid" />
             </NavbarBrand>
           </Col>
           
           <Col className="d-none d-lg-flex justify-content-end">
-            <Form inline>
-              <Input type="search" className="mr-3" placeholder="Search React Courses" />
-              <Button type="submit" color="info" outline>Search</Button>
-            </Form>
+            
+              <LoginModal />
+              <RegisterModal />
+       
           </Col>
           
         </Row>
       </Container>
-      
     </Navbar>
   </header>
 );

@@ -5,25 +5,30 @@ import (
 	"net/http"
 	"os"
 
-	app "github.com/tommar5/Saitinai/app"
-
-	"github.com/gorilla/handlers"
+	"github.com/rs/cors"
+	mgo "gopkg.in/mgo.v2"
 )
 
+var vaccines *mgo.Collection
+var users *mgo.Collection
+
 func main() {
-	// Get the "PORT" env variable
-	port := os.Getenv("PORT")
-
-	if port == "" {
-		log.Fatal("$PORT must be set")
+	session, err := mgo.Dial("172.17.0.1:27018")
+	if err != nil {
+		log.Fatalln(err)
+		log.Fatalln("localhost err")
+		os.Exit(1)
 	}
+	defer session.Close()
+	session.SetMode(mgo.Monotonic, true)
 
-	router := app.NewRouter() // create routes
+	// Get posts collection
+	vaccines = session.DB("vaccine").C("vaccines")
+	users = session.DB("vaccine").C("users")
 
-	// These two lines are important if you're designing a front-end to utilise this API methods
-	allowedOrigins := handlers.AllowedOrigins([]string{"*"})
-	allowedMethods := handlers.AllowedMethods([]string{"GET", "POST", "DELETE", "PUT"})
+	router := NewRouter() // create routes
 
-	// Launch server with CORS validations
-	log.Fatal(http.ListenAndServe(":"+port, handlers.CORS(allowedOrigins, allowedMethods)(router)))
+	if err := http.ListenAndServe(":8080", cors.AllowAll().Handler(router)); err != nil {
+		log.Fatal(err)
+	}
 }

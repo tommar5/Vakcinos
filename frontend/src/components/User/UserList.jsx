@@ -2,10 +2,9 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, UncontrolledCollapse, Button, CardBody, Card } from 'reactstrap';
 
-import AddVaccine from './AddVacineModal';
-import UpdateVaccine from './UpdateVacinneModal';
+import UpdateUser from './UpdateUser';
 
-class Vaccine extends Component {
+class UserList extends Component {
 
   state = { vaccine: null }
   
@@ -40,27 +39,29 @@ class Vaccine extends Component {
       return (
         <Fragment>
         <div className="position-relative">
-          <Row>
-            <Col>
-            <span className="pb-4 h2 text-dark border-bottom border-gray">All available Vaccines</span>
-            </Col>
-            <Col>
-            <div className="align-right">
-            <AddVaccine/>
-            </div>
-            </Col>
-          </Row>
-          
+ 
+            <span className="pb-4 h2 text-dark border-bottom border-gray">All users</span>
+
           <ListGroup>
         <ListGroupItem>
           <a href="" id="toggler" style={{ marginBottom: '1rem' }}>
             <ListGroupItemHeading>
-              List group item heading
+              Name SecondName
             </ListGroupItemHeading>
           </a>
         
           <ListGroupItemText>
-          Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
+              <Row>
+                  <Col>
+                  BirthDay: ... Email: test@test.com
+                  </Col>
+                  <Col>
+                    <div className="align-right">
+                        <UpdateUser/>
+                        <Link to="user/{id}/delete"><Button color="danger" style={{marginRight: 15}}>Delete</Button></Link>
+                    </div>
+                  </Col>
+              </Row>
           </ListGroupItemText>
           <UncontrolledCollapse toggler="#toggler">
       <Card>
@@ -70,25 +71,9 @@ class Vaccine extends Component {
           similique porro a molestias consequuntur earum odio officiis natus, amet hic, iste sed
           dignissimos esse fuga! Minus, alias.
           </Row>
-          <Row className="align-right">
-            <UpdateVaccine/>
-            <Link to="/{id}/delete"><Button color="danger" style={{marginRight: 15}}>Delete</Button></Link>
-          </Row>
         </CardBody>
       </Card>
     </UncontrolledCollapse>
-        </ListGroupItem>
-        <ListGroupItem>
-          <ListGroupItemHeading>List group item heading</ListGroupItemHeading>
-          <ListGroupItemText>
-          Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
-          </ListGroupItemText>
-        </ListGroupItem>
-        <ListGroupItem>
-          <ListGroupItemHeading>List group item heading</ListGroupItemHeading>
-          <ListGroupItemText>
-          Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
-          </ListGroupItemText>
         </ListGroupItem>
       </ListGroup>
           
@@ -100,4 +85,4 @@ class Vaccine extends Component {
   
 }
 
-export default Vaccine;
+export default UserList;

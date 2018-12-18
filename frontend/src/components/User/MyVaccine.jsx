@@ -1,11 +1,8 @@
 import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import { Row, Col, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, UncontrolledCollapse, Button, CardBody, Card } from 'reactstrap';
+import axios from 'axios';
+import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, UncontrolledCollapse, Button, CardBody, Card } from 'reactstrap';
 
-import AddVaccine from './AddVacineModal';
-import UpdateVaccine from './UpdateVacinneModal';
-
-class Vaccine extends Component {
+class MyVaccine extends Component {
 
   state = { vaccine: null }
   
@@ -40,16 +37,8 @@ class Vaccine extends Component {
       return (
         <Fragment>
         <div className="position-relative">
-          <Row>
-            <Col>
-            <span className="pb-4 h2 text-dark border-bottom border-gray">All available Vaccines</span>
-            </Col>
-            <Col>
-            <div className="align-right">
-            <AddVaccine/>
-            </div>
-            </Col>
-          </Row>
+          
+          <span className="d-block pb-4 h2 text-dark border-bottom border-gray">My Vaccines</span>
           
           <ListGroup>
         <ListGroupItem>
@@ -65,15 +54,9 @@ class Vaccine extends Component {
           <UncontrolledCollapse toggler="#toggler">
       <Card>
         <CardBody>
-          <Row>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt magni, voluptas debitis
           similique porro a molestias consequuntur earum odio officiis natus, amet hic, iste sed
           dignissimos esse fuga! Minus, alias.
-          </Row>
-          <Row className="align-right">
-            <UpdateVaccine/>
-            <Link to="/{id}/delete"><Button color="danger" style={{marginRight: 15}}>Delete</Button></Link>
-          </Row>
         </CardBody>
       </Card>
     </UncontrolledCollapse>
@@ -97,7 +80,6 @@ class Vaccine extends Component {
       );
     }
   }
-  
 }
 
-export default Vaccine;
+export default MyVaccine;

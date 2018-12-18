@@ -1,13 +1,11 @@
-package app
+package main
 
 import (
 	"fmt"
 	"log"
 	"strings"
 
-	db "github.com/tommar5/Saitinai/app/config"
-	vac "github.com/tommar5/Saitinai/app/models"
-	"gopkg.in/mgo.v2"
+	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -16,8 +14,8 @@ type VaccineRepo struct{}
 var vaccineId = 10
 
 // GetVaccines returns the list of Vaccines
-func (r VaccineRepo) GetVaccines() vac.Vaccines {
-	session, err := mgo.Dial(db.SERVER)
+func (r VaccineRepo) GetVaccines() Vaccines {
+	session, err := mgo.Dial(SERVER)
 
 	if err != nil {
 
@@ -26,8 +24,8 @@ func (r VaccineRepo) GetVaccines() vac.Vaccines {
 
 	defer session.Close()
 
-	c := session.DB(db.DBNAME).C(db.COLLECTION)
-	results := vac.Vaccines{}
+	c := session.DB(DBNAME).C(COLLECTION)
+	results := Vaccines{}
 
 	if err := c.Find(nil).All(&results); err != nil {
 		fmt.Println("Failed to write results:", err)
@@ -37,8 +35,8 @@ func (r VaccineRepo) GetVaccines() vac.Vaccines {
 }
 
 // GetVaccineById returns a unique Vaccine
-func (r VaccineRepo) GetVaccineById(id int) vac.Vaccine {
-	session, err := mgo.Dial(db.SERVER)
+func (r VaccineRepo) GetVaccineById(id int) Vaccine {
+	session, err := mgo.Dial(SERVER)
 
 	if err != nil {
 		fmt.Println("Failed to establish connection to Mongo server:", err)
@@ -46,8 +44,8 @@ func (r VaccineRepo) GetVaccineById(id int) vac.Vaccine {
 
 	defer session.Close()
 
-	c := session.DB(db.DBNAME).C(db.COLLECTION)
-	var result vac.Vaccine
+	c := session.DB(DBNAME).C(COLLECTION)
+	var result Vaccine
 
 	fmt.Println("ID in GetVaccineById", id)
 
@@ -59,8 +57,8 @@ func (r VaccineRepo) GetVaccineById(id int) vac.Vaccine {
 }
 
 // GetVaccinesByString takes a search string as input and returns vaccines
-func (r VaccineRepo) GetVaccinesByString(query string) vac.Vaccines {
-	session, err := mgo.Dial(db.SERVER)
+func (r VaccineRepo) GetVaccinesByString(query string) Vaccines {
+	session, err := mgo.Dial(SERVER)
 
 	if err != nil {
 		fmt.Println("Failed to establish connection to Mongo server:", err)
@@ -68,8 +66,8 @@ func (r VaccineRepo) GetVaccinesByString(query string) vac.Vaccines {
 
 	defer session.Close()
 
-	c := session.DB(db.DBNAME).C(db.COLLECTION)
-	result := vac.Vaccines{}
+	c := session.DB(DBNAME).C(COLLECTION)
+	result := Vaccines{}
 
 	// Logic to create filter
 	qs := strings.Split(query, " ")
@@ -89,13 +87,13 @@ func (r VaccineRepo) GetVaccinesByString(query string) vac.Vaccines {
 }
 
 // AddVaccine adds a Vaccine in the DB
-func (r VaccineRepo) AddVaccine(vaccine vac.Vaccine) bool {
-	session, err := mgo.Dial(db.SERVER)
+func (r VaccineRepo) AddVaccine(vaccine Vaccine) bool {
+	session, err := mgo.Dial(SERVER)
 	defer session.Close()
 
 	vaccineId += 1
-	vaccine.ID = vaccineId
-	session.DB(db.DBNAME).C(db.COLLECTION).Insert(vaccine)
+	vaccine.ID = bson.NewObjectId()
+	session.DB(DBNAME).C(COLLECTION).Insert(vaccine)
 	if err != nil {
 		log.Fatal(err)
 		return false
@@ -107,11 +105,11 @@ func (r VaccineRepo) AddVaccine(vaccine vac.Vaccine) bool {
 }
 
 // UpdateVaccine updates a Vaccine in the DB
-func (r VaccineRepo) UpdateVaccine(vaccine vac.Vaccine) bool {
-	session, err := mgo.Dial(db.SERVER)
+func (r VaccineRepo) UpdateVaccine(vaccine Vaccine) bool {
+	session, err := mgo.Dial(SERVER)
 	defer session.Close()
 
-	err = session.DB(db.DBNAME).C(db.COLLECTION).UpdateId(vaccine.ID, vaccine)
+	err = session.DB(DBNAME).C(COLLECTION).UpdateId(vaccine.ID, vaccine)
 
 	if err != nil {
 		log.Fatal(err)
@@ -125,11 +123,11 @@ func (r VaccineRepo) UpdateVaccine(vaccine vac.Vaccine) bool {
 
 // DeleteVaccine deletes an Vaccine
 func (r VaccineRepo) DeleteVaccine(id int) string {
-	session, err := mgo.Dial(db.SERVER)
+	session, err := mgo.Dial(SERVER)
 	defer session.Close()
 
 	// Remove vaccine
-	if err = session.DB(db.DBNAME).C(db.COLLECTION).RemoveId(id); err != nil {
+	if err = session.DB(DBNAME).C(COLLECTION).RemoveId(id); err != nil {
 		log.Fatal(err)
 		return "INTERNAL ERR"
 	}

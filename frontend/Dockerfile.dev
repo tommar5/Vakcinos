@@ -2,9 +2,9 @@ FROM node:alpine
 
 WORKDIR '/frontend'
 
-COPY package.json .
+COPY ./github.com/tommar5/Vakcinos/frontend/package.json .
 RUN npm install
 
-COPY . .
+COPY ./github.com/tommar5/Vakcinos/frontend/ .
 
 CMD ["npm", "run", "start"]
